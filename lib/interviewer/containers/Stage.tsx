@@ -1,6 +1,6 @@
-import getInterface from './Interfaces';
+import { memo, type ElementType } from 'react';
 import StageErrorBoundary from '../components/StageErrorBoundary';
-import { type ElementType, memo } from 'react';
+import getInterface from './Interfaces';
 import { type BeforeNextFunction } from './ProtocolScreen';
 
 type StageProps = {
@@ -23,10 +23,7 @@ function Stage(props: StageProps) {
   ) as unknown as ElementType<StageProps>;
 
   return (
-    <div
-      className="flex-grow-1 relative flex h-full w-full basis-full overflow-hidden"
-      id="stage"
-    >
+    <div className="relative flex grow overflow-hidden" id="stage">
       <StageErrorBoundary>
         {CurrentInterface && (
           <CurrentInterface

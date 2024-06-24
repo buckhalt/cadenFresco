@@ -10,6 +10,7 @@ import { parseAsInteger, useQueryState } from 'nuqs';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import usePrevious from '~/hooks/usePrevious';
+import { cn } from '~/utils/shadcn';
 import Navigation from '../components/Navigation';
 import { actionCreators as sessionActions } from '../ducks/modules/session';
 import useReadyForNextStage from '../hooks/useReadyForNextStage';
@@ -46,7 +47,7 @@ const variants = {
       return { opacity: 0, y: 0 };
     }
 
-    return current > previous ? { y: '100vh' } : { y: '-100vh' };
+    return current > previous ? { y: '100dvh' } : { y: '-100dvh' };
   },
   animate: {
     opacity: 1,
@@ -131,7 +132,7 @@ export default function ProtocolScreen() {
 
       // from this point on we are definitely navigating, so set up the animation
       setProgress(makeFakeSessionProgress(nextValidStageIndex, 0));
-      await animate(scope.current, { y: '-100vh' }, animationOptions);
+      await animate(scope.current, { y: '-100dvh' }, animationOptions);
       // If the result is true or 'FORCE' we can reset the function here:
       registerBeforeNext(null);
       dispatch(
@@ -172,7 +173,7 @@ export default function ProtocolScreen() {
       setProgress(makeFakeSessionProgress(previousValidStageIndex, 0));
 
       // from this point on we are definitely navigating, so set up the animation
-      await animate(scope.current, { y: '100vh' }, animationOptions);
+      await animate(scope.current, { y: '100dvh' }, animationOptions);
       registerBeforeNext(null);
       dispatch(
         sessionActions.updateStage(
@@ -229,7 +230,10 @@ export default function ProtocolScreen() {
   return (
     <>
       <motion.div
-        className="relative flex h-full w-full flex-1 flex-row overflow-hidden"
+        className={cn(
+          'relative flex h-full w-full flex-1 flex-col-reverse overflow-hidden overscroll-none',
+          'md:flex-row',
+        )}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
@@ -243,7 +247,7 @@ export default function ProtocolScreen() {
         <motion.div
           key={currentStep}
           ref={scope}
-          className="flex h-full w-full"
+          className="flex flex-1 overflow-hidden"
           initial="initial"
           animate="animate"
           variants={variants}
